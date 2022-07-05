@@ -14,7 +14,7 @@ module('Integration | Component | map', function (hooks) {
       @width="150"
       @height="120"
     />`);
-    
+
     assert
       .dom('.map iframe')
       .exists()
@@ -35,10 +35,7 @@ module('Integration | Component | map', function (hooks) {
       'the src should include the lat,lng parameter'
     );
 
-    assert.ok(
-      src.includes('10'),
-      'the src should include the zoom parameter'
-    )
+    assert.ok(src.includes('10'), 'the src should include the zoom parameter');
 
     // assert.ok(
     //   .includes('150x120'),
@@ -73,7 +70,7 @@ module('Integration | Component | map', function (hooks) {
     assert.ok(
       iframe.src.includes('10'),
       'the src should include the zoom parameter'
-    )
+    );
 
     this.setProperties({
       width: 300,
@@ -89,7 +86,7 @@ module('Integration | Component | map', function (hooks) {
     assert.ok(
       iframe.src.includes('12'),
       'the src should include the zoom parameter'
-    )
+    );
 
     this.setProperties({
       lat: 47.6062,
@@ -104,7 +101,7 @@ module('Integration | Component | map', function (hooks) {
     assert.ok(
       iframe.src.includes('12'),
       'the src should include the zoom parameter'
-    )
+    );
 
     // assert.ok(
     //   src.includes('300x200@2x'),
@@ -142,6 +139,5 @@ module('Integration | Component | map', function (hooks) {
       .hasAttribute('src', /^https:\/\/maps\.google\.com\//)
       .hasAttribute('width', '150')
       .hasAttribute('height', '120');
-
   });
 });

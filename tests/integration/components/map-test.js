@@ -2,7 +2,6 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'super-rentals/tests/helpers';
 import { render, find } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
-import ENV from 'super-rentals/config/environment';
 
 module('Integration | Component | map', function (hooks) {
   setupRenderingTest(hooks);
@@ -17,19 +16,18 @@ module('Integration | Component | map', function (hooks) {
     />`);
     
     assert
-      .dom('.map img')
+      .dom('.map iframe')
       .exists()
       .hasAttribute('alt', 'Map image at coordinates 37.7797,-122.4184')
       .hasAttribute('src')
       .hasAttribute('width', '150')
       .hasAttribute('height', '120');
 
-    let { src } = find('.map img');
-    let token = encodeURIComponent(ENV.GOOGLE_ACCESS_TOKEN);
+    let { src } = find('.map iframe');
 
     assert.ok(
-      src.startsWith('https://maps.googleapis.com/'),
-      'the src starts with "https://maps.googleapis.com/"'
+      src.startsWith('https://maps.google.com/'),
+      'the src starts with "https://maps.google.com/"'
     );
 
     assert.ok(
@@ -42,15 +40,10 @@ module('Integration | Component | map', function (hooks) {
       'the src should include the zoom parameter'
     )
 
-    assert.ok(
-      src.includes('150x120'),
-      'the src should include the width,height parameter'
-    );
-
-    assert.ok(
-      src.includes(`key=${token}`),
-      'the src should include the escaped access token'
-    );
+    // assert.ok(
+    //   .includes('150x120'),
+    //   'the src should include the width,height parameter'
+    // );
   });
 
   test('it updates the `src` attribute when the arguments change', async function (assert) {
@@ -70,17 +63,17 @@ module('Integration | Component | map', function (hooks) {
       @height={{this.height}}
     />`);
 
-    let img = find('.map img');
+    let iframe = find('.map iframe');
 
     assert.ok(
-      img.src.includes('-122.4194,37.7749,10'),
-      'the src should include the lng,lat,zoom parameter'
+      iframe.src.includes('37.7749,-122.4194'),
+      'the src should include the lat,lng parameter'
     );
 
     assert.ok(
-      img.src.includes('150x120@2x'),
-      'the src should include the width,height and @2x parameter'
-    );
+      iframe.src.includes('10'),
+      'the src should include the zoom parameter'
+    )
 
     this.setProperties({
       width: 300,
@@ -89,14 +82,14 @@ module('Integration | Component | map', function (hooks) {
     });
 
     assert.ok(
-      img.src.includes('-122.4194,37.7749,12'),
-      'the src should include the lng,lat,zoom parameter'
+      iframe.src.includes('37.7749,-122.4194'),
+      'the src should include the lat,lng parameter'
     );
 
     assert.ok(
-      img.src.includes('300x200@2x'),
-      'the src should include the width,height and @2x parameter'
-    );
+      iframe.src.includes('12'),
+      'the src should include the zoom parameter'
+    )
 
     this.setProperties({
       lat: 47.6062,
@@ -104,14 +97,19 @@ module('Integration | Component | map', function (hooks) {
     });
 
     assert.ok(
-      img.src.includes('-122.3321,47.6062,12'),
-      'the src should include the lng,lat,zoom parameter'
+      iframe.src.includes('47.6062,-122.3321'),
+      'the src should include the lat,lng parameter'
     );
 
     assert.ok(
-      img.src.includes('300x200@2x'),
-      'the src should include the width,height and @2x parameter'
-    );
+      iframe.src.includes('12'),
+      'the src should include the zoom parameter'
+    )
+
+    // assert.ok(
+    //   src.includes('300x200@2x'),
+    //   'the src should include the width,height and @2x parameter'
+    // );
   });
 
   test('the default alt attribute can be overridden', async function (assert) {
@@ -124,7 +122,7 @@ module('Integration | Component | map', function (hooks) {
       alt="A map of San Francisco"
     />`);
 
-    assert.dom('.map img').hasAttribute('alt', 'A map of San Francisco');
+    assert.dom('.map iframe').hasAttribute('alt', 'A map of San Francisco');
   });
 
   test('the src, width and height attributes cannot be overridden', async function (assert) {
@@ -140,8 +138,8 @@ module('Integration | Component | map', function (hooks) {
     />`);
 
     assert
-      .dom('.map img')
-      .hasAttribute('src', /^https:\/\/maps\.googleapis\.com\//)
+      .dom('.map iframe')
+      .hasAttribute('src', /^https:\/\/maps\.google\.com\//)
       .hasAttribute('width', '150')
       .hasAttribute('height', '120');
 

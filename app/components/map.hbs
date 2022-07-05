@@ -1,8 +1,9 @@
 <div class="map">
-  <img
+  <iframe
   alt="Map image at coordinates {{@lat}},{{@lng}}"
   ...attributes
-  src={{this.src}}
+  src="https://maps.google.com/maps?q={{@lat}},{{@lng}}&z={{@zoom}}&amp;output=embed"
   width={{@width}} height={{@height}}
   >
+  </iframe>
 </div>

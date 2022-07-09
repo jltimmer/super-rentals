@@ -38,7 +38,7 @@ module('Integration | Component | share-button', function (hooks) {
       .hasClass('share')
       .hasClass('button')
       .containsText('Tweet this!');
-      
+
     assert.strictEqual(this.tweetParam('url'), MOCK_URL.href);
   });
 
